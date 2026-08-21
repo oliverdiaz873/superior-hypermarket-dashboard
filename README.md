@@ -1,8 +1,8 @@
-# dashboard-websites-hypermarket
+# superior-hypermarket-dashboard
 
 Dashboard administrativo del ecommerce **Hipermercado Superior**. Exclusivo para
 administradores, construido sobre la API REST del backend
-(`backend-advanced-websites-hypermarket-express-mongodb`).
+(`superior-hypermarket-api`).
 
 > **Project Status**
 >
@@ -34,42 +34,42 @@ misma API REST central del backend que los storefronts públicos de clientes.
 ```
                     Hipermercado Superior Ecosystem
 
-        backend-advanced-websites-hypermarket-express-mongodb
+        superior-hypermarket-api
                          Express REST API
-                                      |
+                                  |
         -----------------------------------------------------------------
         |                           |                            |
         |                           |                            |
-pre-advanced-websites-    pre-advanced-websites-      dashboard-websites-
-hypermarket-next          hypermarket-angular         hypermarket
+superior-hypermarket-    superior-hypermarket-      superior-hypermarket-
+storefront-next          storefront-angular         dashboard
 
    Next.js Storefront         Angular Storefront      Angular Admin Dashboard
-     (Customer App)            (Customer App)              (Admin App)
-                                      |
-                                      ▼
-                                 MongoDB
+      (Customer App)            (Customer App)              (Admin App)
+                                  |
+                                  ▼
+                             MongoDB
 
-                 hypermarket-superior-e2e (Playwright)
-                 E2E central que valida el ecosistema completo
+                  superior-hypermarket-e2e (Playwright)
+                  E2E central que valida el ecosistema completo
 ```
 
-| Repository                                            | Type              | Technology                        | Purpose                     |
-| ----------------------------------------------------- | ----------------- | --------------------------------- | --------------------------- |
-| backend-advanced-websites-hypermarket-express-mongodb | Backend API       | Express + MongoDB + JWT           | API central del sistema     |
-| pre-advanced-websites-hypermarket-next                | Customer Frontend | Next.js + React                   | Tienda pública              |
-| pre-advanced-websites-hypermarket-angular             | Customer Frontend | Angular                           | Tienda pública alternativa  |
-| dashboard-websites-hypermarket                        | Admin Frontend    | Angular + Material + NgRx Signals | Panel administrativo        |
-| hypermarket-superior-e2e                              | E2E Harness       | Playwright                        | Infraestructura E2E central |
+| Repository                              | Type              | Technology                        | Purpose                     |
+| --------------------------------------- | ----------------- | --------------------------------- | --------------------------- |
+| superior-hypermarket-api                | Backend API       | Express + MongoDB + JWT           | API central del sistema     |
+| superior-hypermarket-storefront-next    | Customer Frontend | Next.js + React                   | Tienda pública              |
+| superior-hypermarket-storefront-angular | Customer Frontend | Angular                           | Tienda pública alternativa  |
+| superior-hypermarket-dashboard          | Admin Frontend    | Angular + Material + NgRx Signals | Panel administrativo        |
+| superior-hypermarket-e2e                | E2E Harness       | Playwright                        | Infraestructura E2E central |
 
 ### Centralized E2E Harness
 
-`hypermarket-superior-e2e` es el repositorio independiente de pruebas
+`superior-hypermarket-e2e` es el repositorio independiente de pruebas
 **End-to-End (Playwright)** del ecosistema. No contiene lógica de negocio: es
 infraestructura de validación que orquesta y valida varios repositorios a la
 vez, probando flujos completos (frontend → backend → persistencia → dashboard)
 y centralizando fixtures, helpers, configuración y specs E2E.
 
-[Centralized E2E Harness - hypermarket-superior-e2e](https://github.com/oliverdiaz873/hypermarket-superior-e2e)
+[Centralized E2E Harness - superior-hypermarket-e2e](https://github.com/oliverdiaz873/superior-hypermarket-e2e)
 
 **Admin Application** — Este repositorio es el cliente administrativo del sistema:
 ofrece la gestión interna (productos, inventario, pedidos, clientes, estadísticas y
@@ -81,7 +81,7 @@ usuarios/roles) a través de la API REST central.
 Storefronts (Next · Angular) · Admin Dashboard (este repo)
         │
         ▼
-backend-advanced-websites-hypermarket-express-mongodb (Express REST API)
+superior-hypermarket-api (Express REST API)
         │
         ▼
 MongoDB
@@ -265,7 +265,7 @@ Resumen de las decisiones registradas durante la auditoría de producción
 ## Instalación limpia
 
 Requisitos: **Node.js ≥ 22** (pínchalo con `.nvmrc`) y el backend Express
-(`backend-advanced-websites-hypermarket-express-mongodb`) corriendo en
+(`superior-hypermarket-api`) corriendo en
 `http://localhost:3000`.
 
 ```bash
