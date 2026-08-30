@@ -1,12 +1,9 @@
-import { computed, inject } from '@angular/core';
+﻿import { computed, inject } from '@angular/core';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 
 import { NOTIFICATION_TYPE } from '@core/enums/notification-type';
 import { NotificationsStore } from '@core/state/notifications/notifications.store';
-import type { SelectOption } from '@shared/components/filter-select/filter-select.component';
-
-import { ProductsService } from '@features/products/services/products.service';
 
 import { OffersService } from '../services/offers.service';
 import type { CreateOfferPayload, Offer, UpdateOfferPayload } from '../models/offer.model';
@@ -19,7 +16,6 @@ interface OffersState {
   hasLoaded: boolean;
   isMutating: boolean;
   error: string | null;
-  productOptions: SelectOption[];
 }
 
 export const OffersStore = signalStore(
@@ -31,7 +27,6 @@ export const OffersStore = signalStore(
     hasLoaded: false,
     isMutating: false,
     error: null,
-    productOptions: [],
   })),
   withComputed(({ items, activeFilter }) => ({
     isEmpty: computed(() => items().length === 0),
@@ -44,7 +39,6 @@ export const OffersStore = signalStore(
   })),
   withMethods((store) => {
     const offersService = inject(OffersService);
-    const productsService = inject(ProductsService);
     const notificationsStore = inject(NotificationsStore);
 
     const load = async (): Promise<void> => {
@@ -60,20 +54,6 @@ export const OffersStore = signalStore(
         });
       } finally {
         patchState(store, { isLoading: false });
-      }
-    };
-
-    const loadProductOptions = async (): Promise<void> => {
-      if (store.productOptions().length > 0) return;
-      try {
-        const page = await firstValueFrom(
-          productsService.list({ page: 1, limit: 100, sortBy: 'name', sortOrder: 'asc' }),
-        );
-        patchState(store, {
-          productOptions: page.data.map((product) => ({ value: product.id, label: product.name })),
-        });
-      } catch {
-        // El ErrorInterceptor ya notifica; el formulario verá opciones vacías.
       }
     };
 
@@ -104,8 +84,6 @@ export const OffersStore = signalStore(
       setActiveFilter(filter: OfferActiveFilter): void {
         patchState(store, { activeFilter: filter });
       },
-
-      loadProductOptions,
 
       async create(payload: CreateOfferPayload): Promise<Offer | null> {
         patchState(store, { isMutating: true });

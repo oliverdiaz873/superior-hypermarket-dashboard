@@ -100,6 +100,32 @@ describe('DataTableComponent', () => {
     expect(comp.cellBadge(rows[1], badgeColumn)).toBeNull();
     expect(comp.badgeClasses('ok')).toContain('emerald');
   });
+
+  it('aplica clases responsive hideOnMobile coherentes entre th y td', async () => {
+    const { fixture } = await setup();
+    const responsiveColumns: TableColumn<Row>[] = [
+      { key: 'name', header: 'Oculta', hideOnMobile: true },
+      { key: 'price', header: 'Visible' },
+    ];
+    fixture.componentRef.setInput('columns', responsiveColumns);
+    fixture.detectChanges();
+
+    const ths = (fixture.nativeElement as HTMLElement).querySelectorAll('thead th');
+    expect(ths.length).toBe(2);
+    expect(ths[0].classList.contains('hidden')).toBe(true);
+    expect(ths[0].className).toContain('sm:table-cell');
+    expect(ths[1].classList.contains('hidden')).toBe(false);
+    expect(ths[1].className).not.toContain('sm:table-cell');
+
+    const firstRowTds = (fixture.nativeElement as HTMLElement).querySelectorAll(
+      'tbody tr:first-child td',
+    );
+    expect(firstRowTds.length).toBe(2);
+    expect(firstRowTds[0].classList.contains('hidden')).toBe(true);
+    expect(firstRowTds[0].className).toContain('sm:table-cell');
+    expect(firstRowTds[1].classList.contains('hidden')).toBe(false);
+    expect(firstRowTds[1].className).not.toContain('sm:table-cell');
+  });
 });
 
 @Component({

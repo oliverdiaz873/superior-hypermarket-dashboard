@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BaseApiService } from '@core/http/services/base-api.service';
@@ -19,9 +19,13 @@ export interface PresignedUpload {
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService extends BaseApiService {
-  list(query: ProductsQuery): Observable<PaginatedResponse<Product[]>> {
+  list(
+    query: ProductsQuery,
+    options: { skipLoading?: boolean } = {},
+  ): Observable<PaginatedResponse<Product[]>> {
     return this.getPaginated<Product[]>(API_ENDPOINTS.adminProducts, {
       params: this.toParams(query),
+      skipLoading: options.skipLoading,
     });
   }
 

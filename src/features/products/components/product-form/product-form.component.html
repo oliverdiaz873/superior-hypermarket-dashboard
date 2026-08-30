@@ -95,27 +95,48 @@
       </select>
     </label>
 
-    <label class="flex flex-col gap-1">
-      <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">Unidad</span>
-      <input formControlName="unit" type="text" class="hs-input" placeholder="kg, unidad, L..." />
-    </label>
-
-    <label class="flex flex-col gap-1">
+    <div
+      class="flex flex-col gap-1 md:col-span-2 rounded-lg border border-border bg-surface-alt/30 p-3"
+    >
       <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300"
-        >Cantidad por unidad</span
+        >Presentación — Contenido por unidad comercial</span
       >
-      <input
-        formControlName="unitQuantity"
-        type="number"
-        min="1"
-        step="0.01"
-        class="hs-input"
-        placeholder="1"
-      />
-      @if (form.controls.unitQuantity.invalid && form.controls.unitQuantity.touched) {
-        <span class="text-xs text-red-600">Debe ser mayor o igual a 1</span>
+      <span class="text-xs text-muted"
+        >Ej: 2 kg, 500 g, 1.5 L, 6 unidades · Cada unidad vendida contiene ese contenido · Stock es
+        independiente (unidades disponibles)</span
+      >
+      <div class="grid grid-cols-2 gap-3 pt-1">
+        <label class="flex flex-col gap-1">
+          <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">Cantidad</span>
+          <input
+            formControlName="unitQuantity"
+            type="number"
+            min="0.01"
+            step="0.01"
+            class="hs-input"
+            placeholder="1"
+          />
+          @if (form.controls.unitQuantity.invalid && form.controls.unitQuantity.touched) {
+            <span class="text-xs text-red-600">Debe ser mayor que 0</span>
+          }
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">Unidad</span>
+          <input
+            formControlName="unit"
+            type="text"
+            class="hs-input"
+            placeholder="kg, g, L, unidad..."
+          />
+        </label>
+      </div>
+      @if (form.controls.unit.value || form.controls.unitQuantity.value) {
+        <span class="text-xs text-muted"
+          >Contenido: {{ form.controls.unitQuantity.value ?? 1 }}
+          {{ form.controls.unit.value || 'unidad' }}</span
+        >
       }
-    </label>
+    </div>
 
     @if (isCreate()) {
       <label class="flex flex-col gap-1">

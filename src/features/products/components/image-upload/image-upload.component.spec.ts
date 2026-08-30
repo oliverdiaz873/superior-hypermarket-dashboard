@@ -47,7 +47,7 @@ describe('ImageUploadComponent', () => {
     fixture.detectChanges();
 
     const img = fixture.nativeElement.querySelector('img') as HTMLImageElement;
-    expect(img.src).toBe('http://localhost:3000/uploads/products/bebidas/coca-cola.avif');
+    expect(img.getAttribute('src')).toBe('/uploads/products/bebidas/coca-cola.avif');
   });
 
   it('emite fileChange al seleccionar un archivo válido y muestra preview', () => {
