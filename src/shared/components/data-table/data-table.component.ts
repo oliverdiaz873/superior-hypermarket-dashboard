@@ -4,6 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 import type {
   TableAction,
@@ -25,7 +26,16 @@ function resolveCellValue<T>(row: T, key: string): unknown {
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MatIcon, MatIconButton, MatTooltip, MatCheckbox, NgTemplateOutlet],
+  imports: [
+    MatIcon,
+    MatIconButton,
+    MatTooltip,
+    MatCheckbox,
+    MatMenu,
+    MatMenuItem,
+    MatMenuTrigger,
+    NgTemplateOutlet,
+  ],
 })
 export class DataTableComponent<T extends { id: string }> {
   readonly columns = input<TableColumn<T>[]>([]);
@@ -39,6 +49,11 @@ export class DataTableComponent<T extends { id: string }> {
   readonly actionClicked = output<TableActionEvent<T>>();
   readonly sortChange = output<TableSort>();
   readonly selectionChange = output<readonly string[]>();
+
+  /** Track function estable para columnas: usa key + header como identificador único */
+  protected readonly trackColumn = (index: number, column: TableColumn<T>): string => {
+    return `${String(column.key)}|${column.header}`;
+  };
 
   cellValue(row: T, column: TableColumn<T>): string {
     if (column.cell) return String(column.cell(row));
@@ -114,10 +129,6 @@ export class DataTableComponent<T extends { id: string }> {
 
   isCurrentlyLoading(): boolean {
     return this.loading();
-  }
-
-  columnKey(column: TableColumn<T>): string {
-    return String(column.key);
   }
 
   actionsOf(row: T): TableAction<T>[] {

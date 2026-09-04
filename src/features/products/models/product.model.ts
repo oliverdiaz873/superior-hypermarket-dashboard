@@ -22,7 +22,7 @@ export interface Product {
   name: string;
   description?: string;
   price: number;
-  image: string;
+  image: string | null;
   imageKey?: string | null;
   categoryId: string;
   subcategoryId?: string | null;

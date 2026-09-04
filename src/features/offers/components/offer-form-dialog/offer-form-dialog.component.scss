@@ -1,0 +1,11 @@
+@use 'variables' as *;
+
+:host {
+  ::ng-deep .mat-mdc-dialog-content {
+    overflow: visible;
+  }
+
+  ::ng-deep .mdc-dialog__surface {
+    overflow: visible;
+  }
+}

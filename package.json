@@ -37,6 +37,7 @@
     "@angular/platform-browser": "^22.1.0",
     "@angular/router": "^22.1.0",
     "@ngrx/signals": "^22.0.0-beta.0",
+    "@playwright/test": "^1.62.1",
     "chart.js": "^4.5.1",
     "ng2-charts": "^10.0.0",
     "rxjs": "~7.8.0",
@@ -62,5 +63,22 @@
     "tailwindcss": "^4.1.12",
     "typescript": "~6.0.2",
     "typescript-eslint": "8.62.1"
-  }
+  },
+  "description": "Dashboard administrativo del ecommerce **Hipermercado Superior**. Exclusivo para administradores, construido sobre la API REST del backend (`superior-hypermarket-api`).",
+  "main": "eslint.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oliverdiaz873/superior-hypermarket-dashboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/oliverdiaz873/superior-hypermarket-dashboard/issues"
+  },
+  "homepage": "https://github.com/oliverdiaz873/superior-hypermarket-dashboard#readme"
 }

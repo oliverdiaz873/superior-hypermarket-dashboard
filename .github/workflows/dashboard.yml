@@ -18,6 +18,11 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Install npm 11.16.0
+        run: |
+          npm install --global npm@11.16.0
+          npm --version
+
       - name: Install dependencies
         run: npm ci
 

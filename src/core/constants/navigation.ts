@@ -18,7 +18,7 @@ export const NAVIGATION_ITEMS: readonly NavigationItem[] = [
   { label: 'Productos', icon: 'inventory_2', route: '/products', enabled: true },
   { label: 'Categorías', icon: 'category', route: '/categories', enabled: true },
   { label: 'Marcas', icon: 'local_offer', route: '/brands', enabled: true, roles: ['admin'] },
-  { label: 'Ofertas', icon: 'sale', route: '/offers', enabled: true, roles: ['admin'] },
+  { label: 'Ofertas', icon: 'discount', route: '/offers', enabled: true, roles: ['admin'] },
   { label: 'Inventario', icon: 'warehouse', route: '/inventory', enabled: true },
   { label: 'Pedidos', icon: 'receipt_long', route: '/orders', enabled: true },
   { label: 'Clientes', icon: 'group', route: '/customers', enabled: true, roles: ['admin'] },

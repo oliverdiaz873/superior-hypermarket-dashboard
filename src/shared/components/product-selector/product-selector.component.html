@@ -1,0 +1,194 @@
+﻿<div class="product-selector" (appClickOutside)="onClickOutside()">
+  @if (selected(); as sel) {
+    <div class="product-selector__selected" data-testid="product-selector-selected">
+      <div class="product-selector__selected-main">
+        @if (resolveImage(sel.image)) {
+          <img
+            class="product-selector__thumb"
+            [src]="resolveImage(sel.image)!"
+            [alt]="sel.name"
+            loading="lazy"
+          />
+        } @else {
+          <span
+            class="product-selector__thumb product-selector__thumb--placeholder"
+            aria-hidden="true"
+          >
+            <mat-icon>image</mat-icon>
+          </span>
+        }
+        <div class="product-selector__selected-info">
+          <span class="product-selector__selected-name">{{ sel.name }}</span>
+          <span class="product-selector__selected-meta">
+            {{ sel.sku }} · {{ sel.price }} DOP
+            @if (sel.category) {
+              · {{ sel.category.name }}
+            }
+            @if (sel.unit) {
+              · {{ sel.unitQuantity ? sel.unitQuantity + ' ' + sel.unit : sel.unit }}
+            }
+          </span>
+        </div>
+      </div>
+      <div class="product-selector__selected-actions">
+        <button
+          type="button"
+          class="product-selector__action"
+          (click)="changeSelection()"
+          [disabled]="disabled()"
+          data-testid="product-selector-change"
+        >
+          Cambiar
+        </button>
+        <button
+          type="button"
+          class="product-selector__action product-selector__action--ghost"
+          (click)="clearSelection()"
+          [disabled]="disabled()"
+          aria-label="Quitar selección"
+          data-testid="product-selector-clear"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="product-selector__field">
+      <label class="product-selector__label" [attr.for]="inputId">Producto</label>
+      <div class="product-selector__input-wrap">
+        <mat-icon class="product-selector__search-icon" aria-hidden="true">search</mat-icon>
+        <input
+          [id]="inputId"
+          type="search"
+          class="product-selector__input hs-input"
+          [placeholder]="placeholder()"
+          [value]="searchText()"
+          [disabled]="disabled()"
+          role="combobox"
+          [attr.aria-expanded]="showDropdown()"
+          [attr.aria-controls]="listboxId"
+          [attr.aria-activedescendant]="activeDescendantId()"
+          [attr.aria-describedby]="showHelper() ? 'product-selector-helper' : null"
+          aria-autocomplete="list"
+          autocomplete="off"
+          (input)="onInput($event)"
+          (focus)="onFocus()"
+          (keydown)="onKeyDown($event)"
+          data-testid="product-selector-input"
+        />
+        @if (searchText()) {
+          <button
+            type="button"
+            class="product-selector__clear"
+            aria-label="Limpiar búsqueda"
+            (click)="clearSelection()"
+            [disabled]="disabled()"
+            data-testid="product-selector-input-clear"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </div>
+      @if (showHelper()) {
+        <span
+          id="product-selector-helper"
+          class="product-selector__helper"
+          data-testid="product-selector-helper"
+          >Escribe al menos 2 caracteres</span
+        >
+      }
+    </div>
+
+    @if (showDropdown()) {
+      <div
+        class="product-selector__dropdown"
+        role="presentation"
+        data-testid="product-selector-dropdown"
+      >
+        <div
+          [id]="listboxId"
+          class="product-selector__listbox"
+          role="listbox"
+          [attr.aria-label]="placeholder()"
+        >
+          @if (isSearching()) {
+            <div
+              class="product-selector__state product-selector__state--loading"
+              data-testid="product-selector-loading"
+            >
+              <span class="product-selector__spinner" aria-hidden="true"></span>
+              <span>Buscando…</span>
+            </div>
+          } @else if (searchErrorMessage(); as err) {
+            <div
+              class="product-selector__state product-selector__state--error"
+              data-testid="product-selector-error"
+            >
+              <mat-icon aria-hidden="true">error_outline</mat-icon>
+              <span>{{ err }}</span>
+              <button
+                type="button"
+                class="product-selector__retry"
+                (click)="retry()"
+                data-testid="product-selector-retry"
+              >
+                Reintentar
+              </button>
+            </div>
+          } @else if (isEmptyResults()) {
+            <div class="product-selector__state" data-testid="product-selector-empty">
+              <mat-icon aria-hidden="true">search_off</mat-icon>
+              <span>Sin resultados para "{{ searchText() }}"</span>
+            </div>
+          } @else {
+            @for (product of results(); track product.id; let i = $index) {
+              <button
+                type="button"
+                class="product-selector__option"
+                [class.product-selector__option--active]="i === activeIndex()"
+                role="option"
+                [id]="listboxId + '-option-' + i"
+                [attr.aria-selected]="i === activeIndex()"
+                (click)="selectProduct(product)"
+                [attr.data-testid]="'product-selector-option-' + product.id"
+              >
+                @if (resolveImage(product.image)) {
+                  <img
+                    class="product-selector__thumb"
+                    [src]="resolveImage(product.image)!"
+                    [alt]="product.name"
+                    loading="lazy"
+                  />
+                } @else {
+                  <span
+                    class="product-selector__thumb product-selector__thumb--placeholder"
+                    aria-hidden="true"
+                  >
+                    <mat-icon>image</mat-icon>
+                  </span>
+                }
+                <span class="product-selector__option-info">
+                  <span class="product-selector__option-name">{{ product.name }}</span>
+                  <span class="product-selector__option-meta">
+                    {{ product.sku }} · {{ product.price }} DOP
+                    @if (product.category) {
+                      · {{ product.category.name }}
+                    }
+                    @if (product.unit) {
+                      ·
+                      {{
+                        product.unitQuantity
+                          ? product.unitQuantity + ' ' + product.unit
+                          : product.unit
+                      }}
+                    }
+                  </span>
+                </span>
+              </button>
+            }
+          }
+        </div>
+      </div>
+    }
+  }
+</div>

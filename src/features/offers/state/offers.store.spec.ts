@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+﻿import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 
@@ -133,23 +133,5 @@ describe('OffersStore', () => {
     expect(store.items()).toEqual([]);
     expect(store.isEmpty()).toBe(true);
     expect(notifications.notifications().length).toBe(1);
-  });
-
-  it('loadProductOptions consume GET /api/admin/products (page 1, limit 100) y mapea a SelectOption', async () => {
-    const pending = store.loadProductOptions();
-    const req = httpMock.expectOne(
-      (r) =>
-        r.url.includes('/api/admin/products') &&
-        r.params.get('page') === '1' &&
-        r.params.get('limit') === '100',
-    );
-    req.flush({
-      success: true,
-      data: [{ id: 'p1', name: 'Arroz 1kg' }],
-      pagination: { page: 1, limit: 100, total: 1, pages: 1 },
-    });
-
-    await pending;
-    expect(store.productOptions()).toEqual([{ value: 'p1', label: 'Arroz 1kg' }]);
   });
 });

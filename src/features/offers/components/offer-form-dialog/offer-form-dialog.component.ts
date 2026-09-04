@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+﻿import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -19,6 +19,8 @@ import {
 import { OffersStore } from '../../state/offers.store';
 import type { CreateOfferPayload, Offer, UpdateOfferPayload } from '../../models/offer.model';
 import { toLocalDatetimeInput } from '../../constants/offer.constants';
+import { ProductSelectorComponent } from '@shared/components/product-selector/product-selector.component';
+import type { Product } from '@features/products/models/product.model';
 
 export interface OfferFormDialogData {
   /** Presente en edición; ausente al crear. */
@@ -52,7 +54,14 @@ const dateRangeValid = (control: AbstractControl): ValidationErrors | null => {
   templateUrl: './offer-form-dialog.component.html',
   styleUrl: './offer-form-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, MatButton, MatDialogTitle, MatDialogContent, MatDialogActions],
+  imports: [
+    ReactiveFormsModule,
+    MatButton,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    ProductSelectorComponent,
+  ],
 })
 export class OfferFormDialogComponent {
   private readonly dialogRef = inject(MatDialogRef<OfferFormDialogComponent>);
@@ -61,6 +70,7 @@ export class OfferFormDialogComponent {
 
   protected readonly isEdit = computed(() => Boolean(this.data.offer));
   protected readonly submitting = signal(false);
+  protected readonly selectedProduct = signal<Product | null>(null);
 
   protected readonly form = new FormGroup(
     {
@@ -91,7 +101,18 @@ export class OfferFormDialogComponent {
         isActive: this.data.offer.isActive,
       });
     }
-    void this.store.loadProductOptions();
+  }
+
+  protected onProductSelected(product: Product | null): void {
+    if (product) {
+      this.selectedProduct.set(product);
+      this.form.controls.productId.setValue(product.id);
+      this.form.controls.productId.markAsTouched();
+    } else {
+      this.selectedProduct.set(null);
+      this.form.controls.productId.setValue('');
+      this.form.controls.productId.markAsTouched();
+    }
   }
 
   protected discountPercentage(): number {

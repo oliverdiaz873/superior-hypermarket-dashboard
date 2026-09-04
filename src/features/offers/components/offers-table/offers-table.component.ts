@@ -38,6 +38,12 @@ export class OffersTableComponent {
 
   protected readonly columns: TableColumn<Offer>[] = [
     {
+      key: 'title',
+      header: 'Título',
+      cell: (row) => row.title ?? '—',
+      hideOnMobile: true,
+    },
+    {
       key: 'productName',
       header: 'Producto',
       cell: (row) => row.productName,

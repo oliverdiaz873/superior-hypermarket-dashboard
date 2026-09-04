@@ -1,18 +1,18 @@
-<h2 mat-dialog-title>{{ isEdit() ? 'Editar oferta' : 'Nueva oferta' }}</h2>
+﻿<h2 mat-dialog-title>{{ isEdit() ? 'Editar oferta' : 'Nueva oferta' }}</h2>
 <mat-dialog-content class="flex flex-col gap-4 pt-2">
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-4" novalidate>
-    <label class="flex flex-col gap-1">
-      <span class="text-sm font-medium text-neutral-700 dark:text-neutral-300">Producto *</span>
-      <select formControlName="productId" class="hs-input hs-input--select">
-        <option value="" disabled>Selecciona un producto</option>
-        @for (option of store.productOptions(); track option.value) {
-          <option [ngValue]="option.value">{{ option.label }}</option>
-        }
-      </select>
+    <div class="flex flex-col gap-1">
+      <app-product-selector
+        [selectedProductId]="form.controls.productId.value"
+        [selectedProduct]="selectedProduct()"
+        [placeholder]="'Buscar por nombre o SKU…'"
+        [disabled]="submitting()"
+        (productSelected)="onProductSelected($event)"
+      />
       @if (form.controls.productId.invalid && form.controls.productId.touched) {
         <span class="text-xs text-red-600">Selecciona un producto</span>
       }
-    </label>
+    </div>
 
     <div class="grid grid-cols-2 gap-4">
       <label class="flex flex-col gap-1">

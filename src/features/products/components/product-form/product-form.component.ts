@@ -58,7 +58,17 @@ export class ProductFormComponent {
     subcategoryId: new FormControl(''),
     brandId: new FormControl(''),
     unit: new FormControl(''),
-    unitQuantity: new FormControl<number | null>(null, { validators: [Validators.min(1)] }),
+    unitQuantity: new FormControl<number | null>(null, {
+      validators: [
+        (control) => {
+          const v = control.value;
+          if (v === null || v === undefined || v === '') return null;
+          const n = Number(v);
+          if (!Number.isFinite(n) || n <= 0) return { min: true };
+          return null;
+        },
+      ],
+    }),
     description: new FormControl(''),
     status: new FormControl<ProductStatus>('active', { validators: [Validators.required] }),
     isAvailable: new FormControl(true),
