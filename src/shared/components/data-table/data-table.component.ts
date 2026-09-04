@@ -4,7 +4,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 import type {
   TableAction,
@@ -26,16 +25,7 @@ function resolveCellValue<T>(row: T, key: string): unknown {
   templateUrl: './data-table.component.html',
   styleUrl: './data-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [
-    MatIcon,
-    MatIconButton,
-    MatTooltip,
-    MatCheckbox,
-    MatMenu,
-    MatMenuItem,
-    MatMenuTrigger,
-    NgTemplateOutlet,
-  ],
+  imports: [MatIcon, MatIconButton, MatTooltip, MatCheckbox, NgTemplateOutlet],
 })
 export class DataTableComponent<T extends { id: string }> {
   readonly columns = input<TableColumn<T>[]>([]);
