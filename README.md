@@ -61,6 +61,38 @@ storefront-next          storefront-angular         dashboard
 | superior-hypermarket-dashboard          | Admin Frontend    | Angular + Material + NgRx Signals | Panel administrativo        |
 | superior-hypermarket-e2e                | E2E Harness       | Playwright                        | Infraestructura E2E central |
 
+### Local development and developer tooling
+
+The Superior Hypermarket ecosystem is composed of independent repositories. Each application keeps its own codebase, local configuration, and runtime lifecycle. To simplify local startup and validation, the project also includes a separate developer tool repository: `superior-hypermarket-dev-tools`.
+
+```text
+Superior Hypermarket
+├── superior-hypermarket-api
+├── superior-hypermarket-storefront-angular
+├── superior-hypermarket-storefront-next
+├── superior-hypermarket-dashboard
+├── superior-hypermarket-e2e
+└── superior-hypermarket-dev-tools
+```
+
+This tooling is intentionally lightweight and does not replace the application repositories or production infrastructure. It exists only to accelerate local setup and status checks for the full stack.
+
+```text
+Application repositories
+├── API
+├── Angular Storefront
+├── Next.js Storefront
+└── Dashboard
+
+Testing
+└── E2E
+
+Developer tooling
+└── dev-tools
+```
+
+`superior-hypermarket-dev-tools` is a local helper for developer workflow convenience. It validates the workspace, checks MongoDB and expected ports, and starts the required services for local development without turning the ecosystem into a monorepo or runtime application.
+
 ### Centralized E2E Harness
 
 `superior-hypermarket-e2e` es el repositorio independiente de pruebas
